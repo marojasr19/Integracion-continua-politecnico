@@ -1,1 +1,0 @@
-alert("Proyecto Integración Continua");
