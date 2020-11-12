@@ -1,0 +1,77 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>{{ title }}</h2>
+<div class="row">
+    <div class="col-md-8">
+        <section id="loginForm">
+            <form action="." method="post" class="form-horizontal" id="login_Post">
+                {% csrf_token %}
+                <input type="hidden" name="email" id="email" />
+                <h4>Use a local account to log in.</h4>
+                <hr />
+                <div class="form-group">
+                    <label for="id_username" class="col-md-2 control-label">User name</label>
+                    <div class="col-md-10">
+                        <input type="text" id="username" name="username" class="form-control" />                        
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="id_password" class="col-md-2 control-label">Password</label>
+                    <div class="col-md-10">
+                        <input type="password" id="password" name="password" class="form-control" />                       
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="hidden" name="next" value="/" />
+                        <input type="button" value="Log in" class="btn btn-default" onclick="Validate()"/>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+    <div class="col-md-4">
+        <section id="socialLoginForm"></section>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+{% load staticfiles %}
+<script src="{% static 'app/scripts/jquery.validate.min.js' %}"></script>
+<script type="text/javascript">
+    function Validate() {
+        var params = {
+            username : $("#username").val(),
+            password : $("#password").val(),
+            email : "n@n.com"
+        };
+
+        $.ajax({
+            //headers: {  'Access-Control-Allow-Origin': 'http://localhost:8085' },            
+            data: params,
+            //contentType: "application/json; charset=utf-8",
+            //dataType: "json",
+            url: 'http://localhost:8086/Login_user',
+            type: 'POST',
+            beforeSend: function (xhr, settings) {
+                xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+            },
+            success: function (arg) {
+                $("#email").val(arg["email"]);
+                $("#login_Post").submit()
+            },
+            error: function (request, status, error) {
+                var dataError = JSON.parse(request.responseText);                
+                alert(dataError["message"].toString());
+            }
+        })
+    }
+</script>
+
+{% endblock %}

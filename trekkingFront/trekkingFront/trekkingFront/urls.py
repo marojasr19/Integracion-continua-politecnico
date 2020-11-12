@@ -25,6 +25,7 @@ urlpatterns = [
              }
          ),
          name='login'),
+    path('NewLogin/', views.NewLogin, name='NewLogin'),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('admin/', admin.site.urls),
 ]
