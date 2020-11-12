@@ -70,20 +70,7 @@ class TreekingSerializer(serializers.Serializer):
     Description_treekingr = serializers.CharField(max_length = 500)  
     Activo_treeking = serializers.BooleanField()
     Tipo = serializers.StringRelatedField(many=True)
-    
+
     class Meta:
         model = Tipo_treeking
-        fields = ['Name_treeking', 'Description_treekingr', 'Tipo','Activo_treeking']
-
-    def create(self, validated_data):
-        return Treeking.objects.create(validated_data)
-
-    def update(self, instance, validated_data):
-        instance.Name_treeking = validated_data.get('Name_treeking',instance.Name_treeking)
-        instance.Description_treekingr = validated_data.get('Description_treekingr',instance.Description_treekingr)
-        instance.Activo_treeking = validated_data.get('Activo_treeking',instance.Activo_treeking)
-        instance.Id_tipo = validated_data.get('Id_tipo',instance.Id_tipo)
-        instance.save()
-        return  instance
-
-
+        fields = ['Name_treeking', 'Description_treekingr', 'Tipos','Activo_treeking']

@@ -3,40 +3,78 @@
 {% block content %}
 
 <h2>{{ title }}</h2>
-<div class="row">
-    <div class="col-md-8">
-        <section id="loginForm">
-            <form action="." method="post" class="form-horizontal" id="login_Post">
-                {% csrf_token %}
-                <input type="hidden" name="email" id="email" />
-                <h4>Use a local account to log in.</h4>
-                <hr />
-                <div class="form-group">
-                    <label for="id_username" class="col-md-2 control-label">User name</label>
-                    <div class="col-md-10">
-                        <input type="text" id="username" name="username" class="form-control" />                        
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="id_password" class="col-md-2 control-label">Password</label>
-                    <div class="col-md-10">
-                        <input type="password" id="password" name="password" class="form-control" />                       
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="hidden" name="next" value="/" />
-                        <input type="button" value="Log in" class="btn btn-default" onclick="Validate()"/>
-                    </div>
-                </div>
-            </form>
-        </section>
-    </div>
-    <div class="col-md-4">
-        <section id="socialLoginForm"></section>
-    </div>
+<div class="container">
+    <div class="row">
+		<div class="col-md-6 col-md-offset-3">
+			<div class="panel panel-login">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-xs-6">
+							<a href="#" class="active" id="login-form-link">Login</a>
+						</div>
+						<div class="col-xs-6">
+							<a href="#" id="register-form-link">Register</a>
+						</div>
+					</div>
+					<hr>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-lg-12">
+							<form id="login-form" action="." method="post" role="form" style="display: block;">
+								{% csrf_token %}
+								<input type="hidden" name="accion" value="0" />
+								<input type="hidden" name="email" id="email" />
+								<div class="form-group">
+									<input type="text" name="username" id="username" tabindex="1" class="form-control" placeholder="Usuario" value="">
+								</div>
+								<div class="form-group">
+									<input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Clave">
+								</div>
+								<div class="form-group">
+									<div class="row">
+										<div class="col-sm-6 col-sm-offset-3">
+											<input type="button" value="Log in" class="btn btn-default" onclick="Login()" style="width: 100%;"/>
+										</div>
+									</div>
+								</div>								
+							</form>
+							<form id="register-form" action="." method="post" role="form" style="display: none;">
+								{% csrf_token %}
+								<input type="hidden" name="accion" value="1" />
+								<div class="form-group">
+									<input type="text" name="first_name" id="first_reg" tabindex="1" class="form-control" placeholder="Nombres" value="">
+								</div>
+								<div class="form-group">
+									<input type="text" name="last_name" id="last_reg" tabindex="1" class="form-control" placeholder="Apellidos" value="">
+								</div>
+								<div class="form-group">
+									<input type="email" name="email" id="email_reg" tabindex="1" class="form-control" placeholder="Correo electronico" value="">
+								</div>
+								<div class="form-group">
+									<input type="text" name="username" id="username_reg" tabindex="1" class="form-control" placeholder="Usuario" value="">
+								</div>
+								<div class="form-group">
+									<input type="password" name="password" id="password_reg" tabindex="2" class="form-control" placeholder="Clave">
+								</div>
+								<div class="form-group">
+									<input type="password" id="confirm_password" tabindex="2" class="form-control" placeholder="Confirmar clave">
+								</div>
+								<div class="form-group">
+									<div class="row">
+										<div class="col-sm-6 col-sm-offset-3">
+											<input type="button" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Registrar" onclick="Registrar()">
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-
 {% endblock %}
 
 
@@ -45,33 +83,126 @@
 {% load staticfiles %}
 <script src="{% static 'app/scripts/jquery.validate.min.js' %}"></script>
 <script type="text/javascript">
-    function Validate() {
-        var params = {
-            username : $("#username").val(),
-            password : $("#password").val(),
-            email : "n@n.com"
-        };
+	$(function() {
+		$('#login-form-link').click(function(e) {
+			$("#login-form").delay(100).fadeIn(100);
+ 			$("#register-form").fadeOut(100);
+			$('#register-form-link').removeClass('active');
+			$(this).addClass('active');
+			e.preventDefault();
+		});
+		$('#register-form-link').click(function(e) {
+			$("#register-form").delay(100).fadeIn(100);
+ 			$("#login-form").fadeOut(100);
+			$('#login-form-link').removeClass('active');
+			$(this).addClass('active');
+			e.preventDefault();
+		});
+	});
 
-        $.ajax({
-            //headers: {  'Access-Control-Allow-Origin': 'http://localhost:8085' },            
-            data: params,
-            //contentType: "application/json; charset=utf-8",
-            //dataType: "json",
-            url: 'http://localhost:8086/Login_user',
-            type: 'POST',
-            beforeSend: function (xhr, settings) {
-                xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
-            },
-            success: function (arg) {
-                $("#email").val(arg["email"]);
-                $("#login_Post").submit()
-            },
-            error: function (request, status, error) {
-                var dataError = JSON.parse(request.responseText);                
-                alert(dataError["message"].toString());
-            }
-        })
+    function Login() {
+		var valid = '';
+		if($("#username").val() == "")
+		{
+			valid += 'El usuario es obligatorio\n';
+		}
+		
+		if($("#password").val() == "")
+		{
+			valid += 'La contraseña es obligatoria';
+		}
+
+		if(valid.length == 0){
+			var params = {
+				username : $("#username").val(),
+				password : $("#password").val(),
+				email : "n@n.com"
+			};
+
+			$.ajax({				
+				data: params,				
+				url: 'http://localhost:8086/Login_user',
+				type: 'POST',
+				beforeSend: function (xhr, settings) {
+					xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+				},
+				success: function (arg) {
+					$("#email").val(arg["email"]);
+					$("#login-form").submit()
+				},
+				error: function (request, status, error) {
+					var dataError = JSON.parse(request.responseText);                
+					alert(dataError["message"].toString());
+				}
+			})
+		}else{
+			alert(valid);
+		}
     }
+
+	function Registrar(){
+		var valid = '';
+		if($("#first_reg").val() == "")
+		{
+			valid += 'Los nombres son obligatorios\n';
+		}
+		if($("#last_reg").val() == "")
+		{
+			valid += 'Los apellidos son obligatorios\n';
+		}
+
+		if($("#username_reg").val() == "")
+		{
+			valid += 'El usuario es obligatorio\n';
+		}
+		
+		if($("#email_reg").val() == "")
+		{
+			valid += 'El correo es obligatorio\n';
+		}
+		
+		if($("#password_reg").val() == "")
+		{
+			valid += 'La contraseña es obligatoria\n';
+		}
+		
+		if($("#confirm_password").val() == "")
+		{
+			valid += 'La confirmacion contraseña es  obligatoria';
+		}else{
+			if($("#password_reg").val() != $("#confirm_password").val()){
+				valid += 'Validar el contenido de las contraseñas no son identicas';
+			}
+		}
+		
+		if(valid.length == 0){
+			var params = {
+				first_name : $("#first_reg").val(),
+				last_name : $("#last_reg").val(),
+				email : $("#email_reg").val(),
+				username : $("#username_reg").val(),
+				password : $("#password_reg").val()
+			};
+
+			$.ajax({				
+				data: params,				
+				url: 'http://localhost:8086/create_user',
+				type: 'POST',
+				beforeSend: function (xhr, settings) {
+					xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+				},
+				success: function (arg) {					
+					$("#register-form").submit()
+				},
+				error: function (request, status, error) {
+					var dataError = JSON.parse(request.responseText);                
+					alert(dataError["username"]["message"].toString());
+				}
+			})
+		}else{
+			alert(valid);
+		}
+	}
 </script>
 
 {% endblock %}

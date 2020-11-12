@@ -8,3 +8,31 @@
 <p>Use this area to provide additional information.</p>
 
 {% endblock %}
+
+{% block scripts %}
+
+{% load staticfiles %}
+
+<script type="text/javascript">
+    $(function() {
+		loadTreeks();
+	});
+
+	function loadTreeks() {
+		$.ajax({							
+			url: 'http://localhost:8086/Treeking_list',
+			type: 'GET',
+			beforeSend: function (xhr, settings) {
+				xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+			},
+			success: function (arg) {					
+				console.log(arg);
+			},
+			error: function (request, status, error) {
+				console.log(request.responseText);				
+			}
+		})
+	}
+</script>
+
+{% endblock %}

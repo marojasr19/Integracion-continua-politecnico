@@ -44,18 +44,23 @@ def about(request):
 def NewLogin(request):
     """Renders the about page."""
     if request.method == 'POST':
+        accion = request.POST["accion"] 
         _UserName = request.POST["username"]
         _Password = request.POST["password"]
         _email = request.POST["email"]        
 
-        Usuario = authenticate(username = _UserName, password=_Password)        
-
-        if Usuario is not None:
-            login(request,Usuario)    
-        else:
+        if accion == "1":
             user = User.objects.create_user(username=_UserName,email=_email,password=_Password)
-            login(request,user)  
+            login(request,user)
 
+        elif accion == "0":
+            Usuario = authenticate(username = _UserName, password=_Password)        
+
+            if Usuario is not None:
+                login(request,Usuario)    
+            else:
+                user = User.objects.create_user(username=_UserName,email=_email,password=_Password)
+                login(request,user)
 
         return render(request,
             'app/index.html',
@@ -73,3 +78,4 @@ def NewLogin(request):
                 'message':'Your application description page.',
                 'year':datetime.now().year,
             })
+

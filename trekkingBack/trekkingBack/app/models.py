@@ -19,7 +19,8 @@ class Treeking(models.Model):
     Id_treeking = models.AutoField(primary_key=True)
     Name_treeking = models.CharField(max_length = 100)
     Description_treekingr = models.CharField(max_length = 5000)      
-    Id_tipo = models.ForeignKey(Tipo_treeking,  related_name='treeking', on_delete=models.CASCADE)
+    Tipo = models.ForeignKey(Tipo_treeking,  related_name='Tipos', on_delete=models.CASCADE)
+    ImageBase = models.ImageField(max_length = 255, upload_to='images/')
     Activo_treeking = models.BooleanField()
 
     def __str__(self):
