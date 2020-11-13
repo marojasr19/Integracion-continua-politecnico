@@ -16,6 +16,7 @@
 <script type="text/javascript">
     $(function() {
 		loadTreeks();
+		loadTypeTreeks();
 	});
 
 	function loadTreeks() {
@@ -33,6 +34,23 @@
 			}
 		})
 	}
+	
+	function loadTypeTreeks() {
+		$.ajax({							
+			url: 'http://localhost:8086/TipoTreeking_list',
+			type: 'GET',
+			beforeSend: function (xhr, settings) {
+				xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+			},
+			success: function (arg) {					
+				console.log(arg);
+			},
+			error: function (request, status, error) {
+				console.log(request.responseText);				
+			}
+		})
+	}
+
 </script>
 
 {% endblock %}

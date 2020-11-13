@@ -29,6 +29,7 @@ class UserSerializer(serializers.Serializer):
         else:
             return data
 
+
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
@@ -49,28 +50,23 @@ class LoginSerializer(serializers.Serializer):
              raise serializers.ValidationError({'message':'El usuario no existe.'}, code=400)
 
 
-class Tipo_treekingSerializer(serializers.Serializer):
-    treeking = serializers.StringRelatedField(many=True)
+class Tipo_treekingSerializer(serializers.Serializer):    
+    Id_tipo = serializers.ReadOnlyField()
     Name_tipo = serializers.CharField(max_length = 100)     
     Description_tipo = serializers.CharField(max_length = 5000)  
     Active_tipo = serializers.BooleanField()
     
-    def create(self, validated_data):
-        return Tipo_treeking.objects.create(validated_data)
-
-    def update(self, instance, validated_data):
-        instance.Name_tipo = validated_data.get('Name_tipo',instance.Name_tipo)
-        instance.Description_tipo = validated_data.get('Description_tipo',instance.Description_tipo)
-        instance.Active_tipo = validated_data.get('Active_tipo',instance.Active_tipo)
-        instance.save()
-        return  instance
+    class Meta:        
+        model = Tipo_treeking
+        fields = ['Id_tipo', 'Name_tipo', 'Description_tipo', 'Active_tipo']
 
 class TreekingSerializer(serializers.Serializer):    
+    Id_treeking = serializers.ReadOnlyField()
     Name_treeking = serializers.CharField(max_length = 100)
     Description_treekingr = serializers.CharField(max_length = 500)  
-    Activo_treeking = serializers.BooleanField()
-    Tipo = serializers.StringRelatedField(many=True)
+    Tipo =  serializers.CharField()
+    Activo_treeking = serializers.BooleanField()    
 
-    class Meta:
-        model = Tipo_treeking
-        fields = ['Name_treeking', 'Description_treekingr', 'Tipos','Activo_treeking']
+    class Meta:        
+        model = Treeking
+        fields = ['Id_treeking','Name_treeking', 'Description_treekingr', 'Tipo','Activo_treeking']

@@ -18,6 +18,7 @@ urlpatterns = [
     path('', admin.site.urls),       
     path('create_user', views.UserCrud),
     path('Login_user', views.LoginSet),
+    path('TipoTreeking_list', views.Tipo_TreekingSet),
     path('Treeking_list', views.TreekingSet)
 ] 
 

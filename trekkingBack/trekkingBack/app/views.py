@@ -39,6 +39,13 @@ def LoginSet(request):
             return Response(serializer.errors, status = status.HTTP_303_SEE_OTHER)
 
 @api_view(['GET'])
+def Tipo_TreekingSet(request):
+    if request.method == 'GET':
+        TipoTreekings = Tipo_treeking.objects.all()
+        serializer = Tipo_treekingSerializer(TipoTreekings, many=True)
+        return Response(serializer.data, status = status.HTTP_200_OK)
+
+@api_view(['GET'])
 def TreekingSet(request):
     if request.method == 'GET':
         treekings = Treeking.objects.all()
