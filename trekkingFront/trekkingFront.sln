@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30709.132
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "trekkingFront", "trekkingFront\trekkingFront.pyproj", "{E25567C5-B098-457C-A8F5-17FFB9B2E05A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E25567C5-B098-457C-A8F5-17FFB9B2E05A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E25567C5-B098-457C-A8F5-17FFB9B2E05A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E25567C5-B098-457C-A8F5-17FFB9B2E05A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E25567C5-B098-457C-A8F5-17FFB9B2E05A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D5E770D3-66BF-449D-A518-C260C754539E}
+	EndGlobalSection
+EndGlobal

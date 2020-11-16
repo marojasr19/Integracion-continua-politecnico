@@ -1,0 +1,56 @@
+{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>{{ title }}.</h2>
+<h3>{{ message }}</h3>
+
+<p>Use this area to provide additional information.</p>
+
+{% endblock %}
+
+{% block scripts %}
+
+{% load staticfiles %}
+
+<script type="text/javascript">
+    $(function() {
+		loadTreeks();
+		loadTypeTreeks();
+	});
+
+	function loadTreeks() {
+		$.ajax({							
+			url: 'http://localhost:8086/Treeking_list',
+			type: 'GET',
+			beforeSend: function (xhr, settings) {
+				xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+			},
+			success: function (arg) {					
+				console.log(arg);
+			},
+			error: function (request, status, error) {
+				console.log(request.responseText);				
+			}
+		})
+	}
+	
+	function loadTypeTreeks() {
+		$.ajax({							
+			url: 'http://localhost:8086/TipoTreeking_list',
+			type: 'GET',
+			beforeSend: function (xhr, settings) {
+				xhr.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+			},
+			success: function (arg) {					
+				console.log(arg);
+			},
+			error: function (request, status, error) {
+				console.log(request.responseText);				
+			}
+		})
+	}
+
+</script>
+
+{% endblock %}
