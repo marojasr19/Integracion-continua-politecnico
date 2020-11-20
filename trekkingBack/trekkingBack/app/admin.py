@@ -1,8 +1,0 @@
-from django.contrib import admin
-from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers  import JSONParser
-from .models import Tipo_treeking, Treeking
-from .serializers import Tipo_treekingSerializer
-
-admin.site.register(Tipo_treeking)
-admin.site.register(Treeking)
